@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
+import {SearchUserService} from '../../services/search-user.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'filtro-ricerca',
   template: `
-    <form [formGroup]="formSearch" >
+    <form [formGroup]="formSearch" (ngSubmit)="ricerca()">
       <div class="row ">
         <div class="col">
           <div class="form-floating mb-3">
@@ -25,10 +27,6 @@ import {FormBuilder} from '@angular/forms';
           </div>
         </div>
       </div>
-
-
-
-
       <div class="mb-3 d-flex">
         <button class="btn btn-primary" type="submit">{{search_button}}</button>
       </div>
@@ -45,13 +43,22 @@ export class FiltroRicercaComponent implements OnInit {
     name:'',
     cognome:'',
     email:''
-  })
+  });
+
+  users$: Observable<any> = this.searchService.getAllUser();
+
+
 
   constructor(
-    readonly _fb: FormBuilder
+    readonly _fb: FormBuilder,
+    readonly searchService: SearchUserService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ricerca(): void {
+    this.users$.subscribe(users => console.log(users));
   }
 
 }
