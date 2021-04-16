@@ -1,1 +1,39 @@
-<p>view-edit-user works!</p>
+<div class="row align-items-center"  style="height: 90vh">
+  <div class="col ">
+    <div class="card p-3">
+      <div class="card-title">
+        {{titleCard}}
+      </div>
+      <form [formGroup]="formUser" (ngSubmit)="submit()">
+        <div class="row ">
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input formControlName="full_name" type="text" class="form-control form-control-sm" id="name"
+                     placeholder="Inserire nome e cognome">
+              <label for="name">Nome e Cognome</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-3">
+              <input formControlName="email" type="email" class="form-control" id="email" placeholder="Inserire Email">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating mb-5">
+              <input formControlName="telefono" type="text" class="form-control" id="telefono" placeholder="Inserire Telefono">
+              <label for="telefono">Telefono</label>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="mb-3 d-flex jus">
+            <button class="btn btn-sm btn-primary mx-3" type="submit">{{submit_button}}</button>
+            <a routerLink="welcome" class="btn btn-sm btn-secondary" type="button">Home</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
