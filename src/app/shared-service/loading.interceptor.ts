@@ -3,16 +3,33 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor, HttpResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {catchError, delay, map} from 'rxjs/operators';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(
+    readonly spinner: NgxSpinnerService
+  ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request);
+    this.spinner.show();
+    return next.handle(request).pipe(
+      delay(1500),
+      map(evento => {
+        if (evento instanceof HttpResponse){
+          this.spinner.hide();
+        }
+        return evento;
+      }),
+      catchError(error => {
+        this.spinner.hide();
+        return of(error);
+      })
+    );
   }
 }
