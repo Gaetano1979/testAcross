@@ -1,12 +1,12 @@
 <div class="row" style="height: 30vh">
   <h1 class="h1">{{filtro_title}}</h1>
   <div class="col">
-    <filtro-ricerca></filtro-ricerca>
+    <filtro-ricerca (formRicerca)="ricerca($event)"></filtro-ricerca>
   </div>
 </div>
 <hr>
-<div *ngIf="" class="row" style="height: 65vh">
+<div *ngIf="users$ | async as users" class="row" style="height: 65vh">
   <div class="col">
-    <lista-users></lista-users>
+    <lista-users (userID)="elimina($event)" [users]="users"></lista-users>
   </div>
 </div>
