@@ -55,6 +55,7 @@ export class FiltroRicercaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
   }
 
   ricerca(): void {
