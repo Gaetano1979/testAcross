@@ -1,7 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {SearchUserService} from '../../services/search-user.service';
-import {Observable} from 'rxjs';
+import {IRicerca, Ricerca} from '../../../../models/ricerca';
+import {IUserResponse} from '../../../../models/user-response.interface';
 
 @Component({
   selector: 'filtro-ricerca',
@@ -10,55 +10,62 @@ import {Observable} from 'rxjs';
       <div class="row ">
         <div class="col">
           <div class="form-floating mb-3">
-            <input formControlName="name" type="text" class="form-control form-control-sm" id="name" placeholder="Inserire nome">
-            <label for="name">Nome</label>
+            <input formControlName="full_name" type="text" class="form-control form-control-sm" id="name"
+                   placeholder="Inserire nome e cognome">
+            <label for="name">Nome e Cognome</label>
           </div>
         </div>
         <div class="col">
           <div class="form-floating mb-3">
-            <input formControlName="cognome" type="text" class="form-control" id="cognome" placeholder="Inserire cognome">
-            <label for="cognome">Cognome</label>
+            <input formControlName="email" type="email" class="form-control" id="email" placeholder="Inserire Email">
+            <label for="email">Email</label>
           </div>
         </div>
         <div class="col">
           <div class="form-floating mb-5">
-            <input formControlName="email" type="email" class="form-control" id="email" placeholder="Inserire email">
-            <label for="cognome">Email</label>
+            <input formControlName="telefono" type="text" class="form-control" id="telefono" placeholder="Inserire Telefono">
+            <label for="telefono">Telefono</label>
           </div>
         </div>
       </div>
       <div class="mb-3 d-flex">
-        <button class="btn btn-primary" type="submit">{{search_button}}</button>
+        <button class="btn btn-sm btn-primary" type="submit">{{search_button}}</button>
+        <a routerLink="/view-edit-user" class="btn btn-sm btn-secondary mx-3" type="button">Crea nuovo utente</a>
       </div>
     </form>
   `,
-  styles: [
-  ]
+  styles: []
 })
 export class FiltroRicercaComponent implements OnInit {
 
   search_button = 'Ricerca';
 
   formSearch = this._fb.group({
-    name:'',
-    cognome:'',
-    email:''
+    full_name: '',
+    telefono: '',
+    email: ''
   });
 
-  users$: Observable<any> = this.searchService.getAllUser();
 
-
+  @Output() formRicerca = new EventEmitter<IUserResponse>();
 
   constructor(
     readonly _fb: FormBuilder,
-    readonly searchService: SearchUserService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
   ricerca(): void {
-    this.users$.subscribe(users => console.log(users));
+    const ricerca: IUserResponse = this.formSearch.getRawValue();
+    this.formRicerca.next(ricerca);
+
   }
+
+  isNull<T, K extends keyof T>(form: T, key: K): T[K] {
+    return form[key];
+  }
+
 
 }
